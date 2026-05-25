@@ -7,6 +7,10 @@ public final class CoordinateConverter {
     private static final double ECC_SQUARED = 0.00669438; // Excentricidad al cuadrado
     private static final double SCALE_FACTOR = 0.9996; // Factor de escala UTM
 
+    private CoordinateConverter() {
+    // Utility class
+    }
+
     /**
      * Convert a set of UTM coordinates to geographical ones.
      * @param uCoordinate The UTM coordinate to convert
