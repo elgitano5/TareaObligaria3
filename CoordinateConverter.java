@@ -33,7 +33,7 @@ public final class CoordinateConverter {
         double e1 = calculateE1();
         double phi1Rad = calculatePhi1(mu, e1);
 
-        double N1 = SEMI_MAJOR_AXIS / Math.sqrt(1 - ECC_SQUARED * Math.pow(Math.sin(phi1Rad), 2));
+        double N1 = calculateN(phi1Rad);
         double T1 = Math.pow(Math.tan(phi1Rad), 2);
         double C1 = eccPrimeSquared * Math.pow(Math.cos(phi1Rad), 2);
         double R1 = SEMI_MAJOR_AXIS * (1 - ECC_SQUARED) / Math.pow(1 - ECC_SQUARED * Math.pow(Math.sin(phi1Rad), 2), 1.5);
@@ -73,7 +73,7 @@ public final class CoordinateConverter {
 
         double eccPrimeSquared = getECCPrimeSquared();
 
-        double N = SEMI_MAJOR_AXIS / Math.sqrt(1 - ECC_SQUARED * Math.pow(Math.sin(latRad), 2));
+        double N = calculateN(latRad);
         double T = Math.pow(Math.tan(latRad), 2);
         double C = eccPrimeSquared * Math.pow(Math.cos(latRad), 2);
         double A = Math.cos(latRad) * (lonRad - lonOriginRad);
@@ -132,6 +132,11 @@ public final class CoordinateConverter {
                 + (3 * e1 / 2 - 27 * Math.pow(e1, 3) / 32) * Math.sin(2 * mu)
                 + (21 * Math.pow(e1, 2) / 16 - 55 * Math.pow(e1, 4) / 32) * Math.sin(4 * mu)
                 + (151 * Math.pow(e1, 3) / 96) * Math.sin(6 * mu);
+        }
+
+        private static double calculateN(double latRad) {
+                return SEMI_MAJOR_AXIS
+                / Math.sqrt(1 - ECC_SQUARED * Math.pow(Math.sin(latRad), 2));
         }
 
         
