@@ -13,18 +13,18 @@ public final class CoordinateConverter {
 
     /**
      * Convert a set of UTM coordinates to geographical ones.
-     * @param uCoordinate The UTM coordinate to convert
+     * @param utm The UTM coordinate to convert
      * @return the converted coordinates
      */
-    public static GeographicalCoordinate convertUTMToGeographical(UTMCoordinate uCoordinate) {
-        if (uCoordinate == null) return null;
+    public static GeographicalCoordinate convertUTMToGeographical(UTMCoordinate utm) {
+        if (utm == null) return null;
 
-        double x = uCoordinate.getEasting() - 500000.0; // Remove false easting
-        double y = uCoordinate.getNorthing();
+        double x = utm.getEasting() - 500000.0; // Remove false easting
+        double y = utm.getNorthing();
 
-        y = adjustSouthernHemisphere(y, uCoordinate.isNorthernHemisphere());
+        y = adjustSouthernHemisphere(y, utm.isNorthernHemisphere());
 
-        double lonOrigin = getCentralMeridian(uCoordinate.getZone());
+        double lonOrigin = getCentralMeridian(utm.getZone());
         double eccPrimeSquared = getECCPrimeSquared();
 
         double M = y / SCALE_FACTOR;
@@ -49,14 +49,14 @@ public final class CoordinateConverter {
 
     /**
      * Convert a set of geographical coordinates to UTM coordinates.
-     * @param gCoordinate The geographical coordinate to convert
+     * @param geo The geographical coordinate to convert
      * @return the converted coordinates
      */
-    public static UTMCoordinate convertGeographicalToUTM(GeographicalCoordinate gCoordinate) {
-        if (gCoordinate == null) return null;
+    public static UTMCoordinate convertGeographicalToUTM(GeographicalCoordinate geo) {
+        if (geo == null) return null;
 
-        double lat = gCoordinate.getLatitude();
-        double lon = gCoordinate.getLongitude();
+        double lat = geo.getLatitude();
+        double lon = geo.getLongitude();
 
         double latRad = Math.toRadians(lat);
         double lonRad = Math.toRadians(lon);
