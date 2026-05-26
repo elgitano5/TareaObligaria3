@@ -38,10 +38,7 @@ public final class CoordinateConverter {
         double C1 = eccPrimeSquared * Math.pow(Math.cos(phi1Rad), 2);
         double R1 = calculateR(phi1Rad);        double D = x / (N1 * SCALE_FACTOR);
 
-        double latRad = phi1Rad - (N1 * Math.tan(phi1Rad) / R1) * (Math.pow(D, 2) / 2 
-                - (5 + 3 * T1 + 10 * C1 - 4 * Math.pow(C1, 2) - 9 * eccPrimeSquared) * Math.pow(D, 4) / 24
-                + (61 + 90 * T1 + 298 * C1 + 45 * Math.pow(T1, 2) - 252 * eccPrimeSquared - 3 * Math.pow(C1, 2)) * Math.pow(D, 6) / 720);
-
+        double latRad = calculateLatitude(phi1Rad, N1, R1, T1, C1, D);
         double lonRad = (D - (1 + 2 * T1 + C1) * Math.pow(D, 3) / 6
                 + (5 - 2 * C1 + 28 * T1 - 3 * Math.pow(C1, 2) + 8 * eccPrimeSquared + 24 * Math.pow(T1, 2)) * Math.pow(D, 5) / 120) / Math.cos(phi1Rad);
 
@@ -141,6 +138,18 @@ public final class CoordinateConverter {
         private static double calculateR(double phi) {
                 return SEMI_MAJOR_AXIS * (1 - ECC_SQUARED)
                 / Math.pow(1 - ECC_SQUARED * Math.pow(Math.sin(phi), 2), 1.5);
+        }
+
+        private static double calculateLatitude(double phi1, double N1, double R1,
+                                        double T1, double C1, double D) {
+                return phi1 - (N1 * Math.tan(phi1) / R1) * (
+                Math.pow(D, 2) / 2
+                    - (5 + 3 * T1 + 10 * C1 - 4 * Math.pow(C1, 2)
+                    - 9 * getECCPrimeSquared()) * Math.pow(D, 4) / 24
+                    + (61 + 90 * T1 + 298 * C1 + 45 * Math.pow(T1, 2)
+                    - 252 * getECCPrimeSquared()
+                    - 3 * Math.pow(C1, 2)) * Math.pow(D, 6) / 720
+                );
         }
 
         
