@@ -39,9 +39,7 @@ public final class CoordinateConverter {
         double R1 = calculateR(phi1Rad);        double D = x / (N1 * SCALE_FACTOR);
 
         double latRad = calculateLatitude(phi1Rad, N1, R1, T1, C1, D);
-        double lonRad = (D - (1 + 2 * T1 + C1) * Math.pow(D, 3) / 6
-                + (5 - 2 * C1 + 28 * T1 - 3 * Math.pow(C1, 2) + 8 * eccPrimeSquared + 24 * Math.pow(T1, 2)) * Math.pow(D, 5) / 120) / Math.cos(phi1Rad);
-
+        double lonRad = calculateLongitude(phi1Rad, T1, C1, D, eccPrimeSquared);
         double finalLat = Math.toDegrees(latRad);
         double finalLon = lonOrigin + Math.toDegrees(lonRad);
 
@@ -150,6 +148,15 @@ public final class CoordinateConverter {
                     - 252 * getECCPrimeSquared()
                     - 3 * Math.pow(C1, 2)) * Math.pow(D, 6) / 720
                 );
+        }
+
+        private static double calculateLongitude(double phi1, double T1, double C1,
+                                         double D, double eccPrimeSquared) {
+                return (D
+                - (1 + 2 * T1 + C1) * Math.pow(D, 3) / 6
+                + (5 - 2 * C1 + 28 * T1 - 3 * Math.pow(C1, 2)
+                + 8 * eccPrimeSquared + 24 * Math.pow(T1, 2)) * Math.pow(D, 5) / 120)
+                / Math.cos(phi1);
         }
 
         
