@@ -28,7 +28,7 @@ public final class CoordinateConverter {
         double eccPrimeSquared = getECCPrimeSquared();
 
         double M = y / SCALE_FACTOR;
-        double mu = M / (SEMI_MAJOR_AXIS * (1 - ECC_SQUARED / 4 - 3 * Math.pow(ECC_SQUARED, 2) / 64 - 5 * Math.pow(ECC_SQUARED, 3) / 256));
+        double mu = calculateMu(M);
 
         double e1 = (1 - Math.sqrt(1 - ECC_SQUARED)) / (1 + Math.sqrt(1 - ECC_SQUARED));
         double phi1Rad = mu + (3 * e1 / 2 - 27 * Math.pow(e1, 3) / 32) * Math.sin(2 * mu)
@@ -116,6 +116,12 @@ public final class CoordinateConverter {
 
         private static double getECCPrimeSquared() {
                 return ECC_SQUARED / (1 - ECC_SQUARED);
+        }
+
+        private static double calculateMu(double M) {
+                return M / (SEMI_MAJOR_AXIS * (1 - ECC_SQUARED / 4
+                - 3 * Math.pow(ECC_SQUARED, 2) / 64
+                - 5 * Math.pow(ECC_SQUARED, 3) / 256));
         }
 
         
