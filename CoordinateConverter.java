@@ -25,7 +25,7 @@ public final class CoordinateConverter {
         y = adjustSouthernHemisphere(y, uCoordinate.isNorthernHemisphere());
 
         double lonOrigin = getCentralMeridian(uCoordinate.getZone());
-        double eccPrimeSquared = (ECC_SQUARED) / (1 - ECC_SQUARED);
+        double eccPrimeSquared = getECCPrimeSquared();
 
         double M = y / SCALE_FACTOR;
         double mu = M / (SEMI_MAJOR_AXIS * (1 - ECC_SQUARED / 4 - 3 * Math.pow(ECC_SQUARED, 2) / 64 - 5 * Math.pow(ECC_SQUARED, 3) / 256));
@@ -73,7 +73,7 @@ public final class CoordinateConverter {
         double lonOrigin = getCentralMeridian(zoneNumber);
         double lonOriginRad = Math.toRadians(lonOrigin);
 
-        double eccPrimeSquared = (ECC_SQUARED) / (1 - ECC_SQUARED);
+        double eccPrimeSquared = getECCPrimeSquared();
 
         double N = SEMI_MAJOR_AXIS / Math.sqrt(1 - ECC_SQUARED * Math.pow(Math.sin(latRad), 2));
         double T = Math.pow(Math.tan(latRad), 2);
@@ -112,6 +112,10 @@ public final class CoordinateConverter {
 
         private static int getZone(double lon) {
                 return (int) Math.floor((lon + 180) / 6) + 1;
+        }
+
+        private static double getECCPrimeSquared() {
+                return ECC_SQUARED / (1 - ECC_SQUARED);
         }
 
         
