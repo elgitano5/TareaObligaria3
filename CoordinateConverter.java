@@ -72,10 +72,7 @@ public final class CoordinateConverter {
         double C = eccPrimeSquared * Math.pow(Math.cos(latRad), 2);
         double A = Math.cos(latRad) * (lonRad - lonOriginRad);
 
-        double M = SEMI_MAJOR_AXIS * ((1 - ECC_SQUARED / 4 - 3 * Math.pow(ECC_SQUARED, 2) / 64 - 5 * Math.pow(ECC_SQUARED, 3) / 256) * latRad
-                - (3 * ECC_SQUARED / 8 + 3 * Math.pow(ECC_SQUARED, 2) / 32 + 45 * Math.pow(ECC_SQUARED, 3) / 1024) * Math.sin(2 * latRad)
-                + (15 * Math.pow(ECC_SQUARED, 2) / 256 + 45 * Math.pow(ECC_SQUARED, 3) / 1024) * Math.sin(4 * latRad)
-                - (35 * Math.pow(ECC_SQUARED, 3) / 3072) * Math.sin(6 * latRad));
+        double M = calculateMeridionalArc(latRad);
 
         double utmEasting = (SCALE_FACTOR * N * (A + (1 - T + C) * Math.pow(A, 3) / 6
                 + (5 - 18 * T + Math.pow(T, 2) + 72 * C - 58 * eccPrimeSquared) * Math.pow(A, 5) / 120)
@@ -157,6 +154,20 @@ public final class CoordinateConverter {
                 + (5 - 2 * C1 + 28 * T1 - 3 * Math.pow(C1, 2)
                 + 8 * eccPrimeSquared + 24 * Math.pow(T1, 2)) * Math.pow(D, 5) / 120)
                 / Math.cos(phi1);
+        }
+
+        private static double calculateMeridionalArc(double latRad) {
+                return SEMI_MAJOR_AXIS * (
+                (1 - ECC_SQUARED / 4
+                - 3 * Math.pow(ECC_SQUARED, 2) / 64
+                - 5 * Math.pow(ECC_SQUARED, 3) / 256) * latRad
+                - (3 * ECC_SQUARED / 8
+                + 3 * Math.pow(ECC_SQUARED, 2) / 32
+                + 45 * Math.pow(ECC_SQUARED, 3) / 1024) * Math.sin(2 * latRad)
+                + (15 * Math.pow(ECC_SQUARED, 2) / 256
+                + 45 * Math.pow(ECC_SQUARED, 3) / 1024) * Math.sin(4 * latRad)
+                - (35 * Math.pow(ECC_SQUARED, 3) / 3072) * Math.sin(6 * latRad)
+                );
         }
 
         
