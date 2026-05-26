@@ -22,9 +22,7 @@ public final class CoordinateConverter {
         double x = uCoordinate.getEasting() - 500000.0; // Remove false easting
         double y = uCoordinate.getNorthing();
 
-        if (!uCoordinate.isNorthernHemisphere()) {
-            y -= 10000000.0; // Remove false north if it's southern hemisphere
-        }
+        y = adjustSouthernHemisphere(y, uCoordinate.isNorthernHemisphere());
 
         double lonOrigin = (uCoordinate.getZone() - 1) * 6 - 180 + 3; // Central meridian
         double eccPrimeSquared = (ECC_SQUARED) / (1 - ECC_SQUARED);
@@ -101,5 +99,12 @@ public final class CoordinateConverter {
         }
 
         return new UTMCoordinate(utmEasting, utmNorthing, zoneNumber, isNorthern);
-    }
+        
+        }
+        
+        private static double adjustSouthernHemisphere(double northing, boolean isNorthern) {
+                return isNorthern ? northing : northing - 10000000.0;
+        }
+
+        
 }
