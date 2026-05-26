@@ -69,7 +69,7 @@ public final class CoordinateConverter {
         double latRad = Math.toRadians(lat);
         double lonRad = Math.toRadians(lon);
 
-        int zoneNumber = (int) Math.floor((lon + 180) / 6) + 1;
+        int zoneNumber = getZone(lon);
         double lonOrigin = getCentralMeridian(zoneNumber);
         double lonOriginRad = Math.toRadians(lonOrigin);
 
@@ -108,6 +108,10 @@ public final class CoordinateConverter {
 
         private static double getCentralMeridian(int zone) {
                 return (zone - 1) * 6 - 180 + 3;
+        }
+
+        private static int getZone(double lon) {
+                return (int) Math.floor((lon + 180) / 6) + 1;
         }
 
         
