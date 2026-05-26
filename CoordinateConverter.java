@@ -36,8 +36,7 @@ public final class CoordinateConverter {
         double N1 = calculateN(phi1Rad);
         double T1 = Math.pow(Math.tan(phi1Rad), 2);
         double C1 = eccPrimeSquared * Math.pow(Math.cos(phi1Rad), 2);
-        double R1 = SEMI_MAJOR_AXIS * (1 - ECC_SQUARED) / Math.pow(1 - ECC_SQUARED * Math.pow(Math.sin(phi1Rad), 2), 1.5);
-        double D = x / (N1 * SCALE_FACTOR);
+        double R1 = calculateR(phi1Rad);        double D = x / (N1 * SCALE_FACTOR);
 
         double latRad = phi1Rad - (N1 * Math.tan(phi1Rad) / R1) * (Math.pow(D, 2) / 2 
                 - (5 + 3 * T1 + 10 * C1 - 4 * Math.pow(C1, 2) - 9 * eccPrimeSquared) * Math.pow(D, 4) / 24
@@ -137,6 +136,11 @@ public final class CoordinateConverter {
         private static double calculateN(double latRad) {
                 return SEMI_MAJOR_AXIS
                 / Math.sqrt(1 - ECC_SQUARED * Math.pow(Math.sin(latRad), 2));
+        }
+
+        private static double calculateR(double phi) {
+                return SEMI_MAJOR_AXIS * (1 - ECC_SQUARED)
+                / Math.pow(1 - ECC_SQUARED * Math.pow(Math.sin(phi), 2), 1.5);
         }
 
         
