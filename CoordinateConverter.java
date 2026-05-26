@@ -74,9 +74,7 @@ public final class CoordinateConverter {
 
         double M = calculateMeridionalArc(latRad);
 
-        double utmEasting = (SCALE_FACTOR * N * (A + (1 - T + C) * Math.pow(A, 3) / 6
-                + (5 - 18 * T + Math.pow(T, 2) + 72 * C - 58 * eccPrimeSquared) * Math.pow(A, 5) / 120)
-                + 500000.0);
+        double utmEasting = calculateEasting(N, A, T, C) + 500000.0;
 
         double utmNorthing = (SCALE_FACTOR * (M + N * Math.tan(latRad) * (Math.pow(A, 2) / 2 
                 + (5 - T + 9 * C + 4 * Math.pow(C, 2)) * Math.pow(A, 4) / 24
@@ -170,5 +168,13 @@ public final class CoordinateConverter {
                 );
         }
 
+        private static double calculateEasting(double N, double A, double T, double C) {
+                return SCALE_FACTOR * N * (
+                A
+                + (1 - T + C) * Math.pow(A, 3) / 6
+                + (5 - 18 * T + Math.pow(T, 2)
+                + 72 * C - 58 * getECCPrimeSquared()) * Math.pow(A, 5) / 120
+                );
+        }
         
 }
