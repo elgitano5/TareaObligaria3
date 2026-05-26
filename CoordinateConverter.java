@@ -76,9 +76,7 @@ public final class CoordinateConverter {
 
         double utmEasting = calculateEasting(N, A, T, C) + 500000.0;
 
-        double utmNorthing = (SCALE_FACTOR * (M + N * Math.tan(latRad) * (Math.pow(A, 2) / 2 
-                + (5 - T + 9 * C + 4 * Math.pow(C, 2)) * Math.pow(A, 4) / 24
-                + (61 - 58 * T + Math.pow(T, 2) + 600 * C - 330 * eccPrimeSquared) * Math.pow(A, 6) / 720)));
+        double utmNorthing = calculateNorthing(M, N, latRad, A, T, C, eccPrimeSquared);
 
         boolean isNorthern = lat >= 0;
         if (!isNorthern) {
@@ -174,6 +172,19 @@ public final class CoordinateConverter {
                 + (1 - T + C) * Math.pow(A, 3) / 6
                 + (5 - 18 * T + Math.pow(T, 2)
                 + 72 * C - 58 * getECCPrimeSquared()) * Math.pow(A, 5) / 120
+                );
+        }
+
+        private static double calculateNorthing(double M, double N, double latRad,
+                                        double A, double T, double C,
+                                        double eccPrimeSquared) {
+                return SCALE_FACTOR * (
+                M + N * Math.tan(latRad) * (
+                Math.pow(A, 2) / 2
+                + (5 - T + 9 * C + 4 * Math.pow(C, 2)) * Math.pow(A, 4) / 24
+                + (61 - 58 * T + Math.pow(T, 2)
+                + 600 * C - 330 * eccPrimeSquared) * Math.pow(A, 6) / 720
+                        )
                 );
         }
         
